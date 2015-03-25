@@ -17,8 +17,15 @@ xal.on('xi.event.input.text', function(state,next){
 	if (match[2].length === 0) {
 	    youtube.play();
 	}
-        else{
-            youtube.add(match[2]);
+        else {
+            if (youtube.state.playing) {
+                youtube.pause();
+            }
+            xal.createEvent('xi.event.output.text', function(state, done) {
+                state.put('xi.event.output.text', 'Playing \'' + match[2] + '\'');
+                youtube.add(match[2]);
+                done(state);
+            });
         }
 	return;
     }
